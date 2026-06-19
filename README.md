@@ -20,6 +20,7 @@ a^{[L-1]}_{i} &= \text{softmax}(\mathbf{z}^{[L-1]})_i = \frac{\exp({z^{[L-1]}_{i
 ```
 
 Expressing the neural network as scalar operations is a great intuition builder, but it severely under-leverages modern hardware architecture and libraries such as NumPy which can achieve blistering speed by parallelizing vectorized operations. Additionally, modern datasets are often massive and consequently must be to be split into batches for training. Therefore, the notation, implementation, and wall clock performance may be improved by vectorizing the above for a batch size of $N$ as:
+```math
 $$
 \begin{aligned}
 \mathbf{A}^{[0]}&= \mathbf{X} \\
@@ -29,7 +30,9 @@ $$
 \mathcal{L}_{\text{cce}} &= -\frac{1}{N}\sum^{N}_{n=1}\sum^{M}_{m=1} y_{mn}\ln(a^{[L-1]}_{mn})
 \end{aligned}
 $$
+```
 with matrices:
+```math
 $$
 \begin{aligned}
     \mathbf{A}^{[l]} &\in \mathbb{R}^{n_l \times N}\\
@@ -37,37 +40,47 @@ $$
     \mathbf{b}^{[l]} &\in \mathbb{R}^{n_l \times 1} \\
 \end{aligned}
 $$
-where each column of $\mathbf{A}^{[l]}$ corresponds to a training example.
+```
+where each column of $`\mathbf{A}^{[l]}`$ corresponds to a training example.
 
 ### 3. Backward Propagation and Gradient Descent
 At this point, the model can produce predictions and the performance can be measured, but these predictions are completely naive and the model cannot learn. The model must change its parameters with respect to the loss function in order to achieve better performance, i.e. it must learn.
 
 A very elegant method is gradient descent, a calculus-based optimization technique that updates the parameters using the gradient composed of the partial derivatives of the parameters with respect to the loss function. It provides a clean way of determining exactly how much each weight, bias, pre-activation, and activation affects the loss. Notice that the successful implementation of gradient descent relies on differentiation; now, observe that neural networks may be expressed as composite functions and, subsequently, differentiated using the chain rule (given the composing functions are differentiable). In practice, this differentiation is not done by hand, instead it is achieved using a dynamic programming-based numerical technique called automatic differentiation. The reader may find it helpful to visualize backpropagation as walking backwards through the network, determining how much each activation, pre-activation, weight, and bias affects the loss. Let: 
+```math
 $$\theta = \{\mathbf{W}^{[1]},\mathbf{b}^{[1]}, \ldots, \mathbf{W}^{[L-1]},\mathbf{b}^{[L-1]} \}$$
+```
 denote the parameter set and
+```math
 $$
 \nabla_{\theta}\mathcal{L} = \left\{ \frac{\partial \mathcal{L}_{\text{cce}}}{\partial \mathbf{W}^{[1]}}, \frac{\partial \mathcal{L}_{\text{cce}}}{\partial \mathbf{b}^{[1]}},\cdots, \frac{\partial \mathcal{L}_{\text{cce}}}{\partial \mathbf{W}^{[L-1]}}, \frac{\partial \mathcal{L}_{\text{cce}}}{\partial \mathbf{b}^{[L-1]}} \right\}
 $$
+```
 denote the corresponding gradient.
 
-Thus, the parameter set will be updated according to: $\theta_{t+1} = \theta_{t} - \eta (\nabla_{\theta}\mathcal{L})_t$, where $\eta$ denotes the learning rate. Note, while there are several types of gradient descent to choose from, mini-batch is used as steps are being taken in the parameter space based on the gradient of a random subset (or batch) of the full training dataset.
+Thus, the parameter set will be updated according to: $`\theta_{t+1} = \theta_{t} - \eta (\nabla_{\theta}\mathcal{L})_t`$, where $`\eta`$ denotes the learning rate. Note, while there are several types of gradient descent to choose from, mini-batch is used as steps are being taken in the parameter space based on the gradient of a random subset (or batch) of the full training dataset.
 
-The first question when propagating error backwards through the network is "how does the change in some $z^{[L-1]}_j$ affect all $a^{[L-1]}_i$ and how does that affect $\mathcal{L}_{\text{cce}}$?". Posing this question as a derivative yields:
+The first question when propagating error backwards through the network is "how does the change in some $`z^{[L-1]}_j`$ affect all $`a^{[L-1]}_i`$ and how does that affect $`\mathcal{L}_{\text{cce}}`$?". Posing this question as a derivative yields:
+```math
 $$
 \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[L-1]}_j} = \sum_i \frac{\partial \mathcal{L}_{\text{cce}}}{\partial a^{[L-1]}_i} \frac{\partial a^{[L-1]}_i}{\partial z^{[L-1]}_j}
 $$
+```
 As it is clear which derivative is being taken the layer indexing will be temporarily dropped to keep the notation clean.
 
 #### 3.1 $\frac{\partial \mathcal{L}_{\text{cce}}}{\partial a_i}$ Derivative of The Loss With Respect to Softmax
+```math
 $$
 \begin{aligned}
     \frac{\partial \mathcal{L}_{\text{cce}}}{\partial a_i} &= \frac{\partial}{\partial a_i} \left[- \sum_i y_i \ln(a_i) \right] \\
     &= -\frac{y_i}{a_i}
 \end{aligned}
 $$
+```
 
 #### 3.2 $\frac{\partial a_i}{\partial z_j}$ Derivative of Softmax With Respect to The Pre-Activation
 ##### Case 1: $i = j$
+```math
 $$
 \begin{aligned}
     \frac{\partial a_i}{\partial z_i} &= \frac{\partial}{\partial z_i} \left[ \frac{\exp(z_i)}{\sum_k \exp(z_k)} \right] \\
@@ -78,7 +91,10 @@ $$
     &= a_i (1 - a_i)
 \end{aligned}
 $$
+```
+
 ##### Case 2: $i \ne j$
+```math
 $$
 \begin{aligned}
     \frac{\partial a_i}{\partial z_j} &= \frac{\partial}{\partial z_j} \left[ \frac{\exp(z_i)}{\sum_k \exp(z_k)} \right] \\
@@ -88,8 +104,10 @@ $$
     &= -\left( \frac{\exp(z_i)}{\sum_k \exp(z_k)} \right)\left( \frac{\exp(z_j)}{\sum_k \exp(z_k)} \right) \\
     &= - a_i a_j
 \end{aligned}
-$$ 
+$$
+```
 Now combining the above:
+```math
 $$
 \begin{aligned}
     \implies \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z_j} &= \sum_{i \ne j}\left( - \frac{y_i}{a_i} \right)(-a_i a_j) + \left( - \frac{y_j}{a_j} \right)a_j (1 - a_j) \\
@@ -100,10 +118,12 @@ $$
     &= a_j - y_j 
 \end{aligned} 
 $$
+```
 Thus, we arrive at a delightfully clean result!
 
 #### 3.3 Backpropagating Further
 Now define the error signal $\delta^{[l]}_i = \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_i}$ and observe:
+```math
 $$
 \begin{aligned}
     \delta^{[L-1]}_i &= a^{[L-1]}_i - y_i \\
@@ -127,6 +147,7 @@ $$
     \implies \mathbf{db}^{[l]} &= \sum^{N}_{n=1} \mathbf{dZ}^{[l]}_{:,n}  
 \end{aligned}
 $$
+```
 
 ## Conclusion
-The model achieved $\sim 97 \%$ accuracy despite a relatively simple architecture! This derivation and implementation has deepened my own understanding and appreciation of neural networks and the research that goes into creating some of the prominent architectures that drive automation, insight, and innovation in today's society.
+The model achieved $`\sim 97 \%`$ accuracy despite a relatively simple architecture! This derivation and implementation has deepened my own understanding and appreciation of neural networks and the research that goes into creating some of the prominent architectures that drive automation, insight, and innovation in today's society.
