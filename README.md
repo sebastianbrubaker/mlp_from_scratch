@@ -123,9 +123,6 @@ Thus, we arrive at a delightfully clean result!
 
 #### 3.3 Backpropagating Further
 Now define the error signal $`\delta^{[l]}_i = \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_i}`$ and observe:
-#### 3.3 Backpropagating Further
-Now define the error signal $`\delta^{[l]}_i = \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_i}`$ and observe:
-
 ```math
 \begin{aligned}
     \delta^{[L-1]}_i &= a^{[L-1]}_i - y_i \\
@@ -140,8 +137,6 @@ Now define the error signal $`\delta^{[l]}_i = \frac{\partial \mathcal{L}_{\text
     \implies \mathbf{dA}^{[l-1]} &= (\mathbf{W}^{[l]})^{\top} \mathbf{dZ}^{[l]} \\
     \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l-1]}_{j}} &= \frac{\partial \mathcal{L}_{\text{cce}}}{\partial a^{[l-1]}_{j}} \frac{\partial a^{[l-1]}_j}{\partial z^{[l-1]}_{j}} \\
     &= \sum_i \delta^{[l]}_i w^{[l]}_{ij} \text{ReLU}'(z^{[l-1]}_{j}) \\
-    \text{With: } &\text{ReLU}'(z) := \begin{cases} 1 \quad \text{if} \quad z > 0 \\
-    0 \quad \text{if} \quad z \le 0\end{cases} \qquad \cdot \text{Let RelU}'(0) = 0 \text{ despite it being technically undefined.}\\
     \implies \mathbf{dZ}^{[l-1]} &= ((\mathbf{W}^{[l]})^{\top} \mathbf{dZ}^{[l]}) \odot \mathbf{ReLU}'(\mathbf{Z}^{[l-1]}) = \mathbf{dA}^{[l-1]} \odot \mathbf{ReLU}'(\mathbf{Z}^{[l-1]}) \\
     \frac{\partial \mathcal{L}_{\text{cce}}}{\partial b^{[l]}_i} &=  \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_{i}}  \frac{\partial z^{[l]}_{i}}{\partial b^{[l]}_{i}} \\
     &= \delta^{[l]}_i(1) \\ 
