@@ -122,7 +122,7 @@ $$
 Thus, we arrive at a delightfully clean result!
 
 #### 3.3 Backpropagating Further
-Now define the error signal $\delta^{[l]}_i = \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_i}$ and observe:
+Now define the error signal $`\delta^{[l]}_i = \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_i}`$ and observe:
 ```math
 $$
 \begin{aligned}
