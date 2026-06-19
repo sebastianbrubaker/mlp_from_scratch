@@ -1,5 +1,4 @@
 # A Rough Derivation of the Multilayer Perceptron 
----
 ## Intro
 I came across a really exciting theorem: the Universal Approximation Theorem, which roughly states that neural networks can approximate any function to any desired degree of accuracy. I've always enjoyed learning things from the ground up, so before using any modern deep learning frameworks to tackle problems in my field I wanted to build a neural network from scratch. Below, I derive a simple multilayer perceptron, implement it in NumPy, then train and test using the MNIST dataset to produce a model that can classify handwritten digits with $`\sim 97 \%`$ accuracy. (Note: I suggest reading the following in `notebook.ipynb` as the typesetting rendered much better there.)
 
