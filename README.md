@@ -124,7 +124,6 @@ Thus, we arrive at a delightfully clean result!
 #### 3.3 Backpropagating Further
 Now define the error signal $`\delta^{[l]}_i = \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_i}`$ and observe:
 ```math
-$$
 \begin{aligned}
     \delta^{[L-1]}_i &= a^{[L-1]}_i - y_i \\
     \implies \mathbf{dZ}^{[L-1]} &= \frac{1}{N} (\mathbf{A}^{[L-1]} - \mathbf{Y}) \qquad \cdot 1/N \text{term arises from differentiating the batch loss.}\\
@@ -146,7 +145,6 @@ $$
     &= \delta^{[l]}_i \\
     \implies \mathbf{db}^{[l]} &= \sum^{N}_{n=1} \mathbf{dZ}^{[l]}_{:,n}  
 \end{aligned}
-$$
 ```
 
 ## Conclusion
