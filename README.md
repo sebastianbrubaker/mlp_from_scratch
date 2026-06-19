@@ -136,7 +136,14 @@ $$
     &= \sum_i \delta^{[l]}_i \frac{\partial}{\partial a^{[l-1]}_{j}}\left[w^{[l]}_{i1}a^{[l-1]}_1 + \cdots + w^{[l]}_{ij}a^{[l-1]}_j + \cdots + b^{[l]}_i\right] \\
     &= \sum_i \delta^{[l]}_i w^{[l]}_{ij} \\
     \implies \mathbf{dA}^{[l-1]} &= (\mathbf{W}^{[l]})^{\top} \mathbf{dZ}^{[l]} \\
-    \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l-1]}_{j}} &= \frac{\partial \mathcal{L}_{\text{cce}}}{\partial a^{[l-1]}_{j}} \frac{\partial a^{[l-1]}_j}{\partial z^{[l-1]}_{j}} \\
+    &= \sum_i \delta^{[l]}_i w^{[l]}_{ij} \text{ReLU}'(z^{[l-1]}_{j}) \\
+    \text{With: } &\text{ReLU}'(z) := \begin{cases} 1 \quad \text{if} \quad z > 0 \\
+    0 \quad \text{if} \quad z \le 0\end{cases} \qquad \cdot \text{Let RelU}'(0) = 0 \text{ despite it being technically undefined.}\\
+    \implies \mathbf{dZ}^{[l-1]} &= ((\mathbf{W}^{[l]})^{\top} \mathbf{dZ}^{[l]}) \odot \mathbf{ReLU}'(\mathbf{Z}^{[l-1]}) = \mathbf{dA}^{[l-1]} \odot \mathbf{ReLU}'(\mathbf{Z}^{[l-1]}) \\
+    \frac{\partial \mathcal{L}_{\text{cce}}}{\partial b^{[l]}_i} &=  \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_{i}}  \frac{\partial z^{[l]}_{i}}{\partial b^{[l]}_{i}} \\
+    &= \delta^{[l]}_i(1) \\ 
+    &= \delta^{[l]}_i \\
+    \implies \mathbf{db}^{[l]} &= \sum^{N}_{n=1} \mathbf{dZ}^{[l]}_{:,n}  
 \end{aligned}
 $$
 ```
