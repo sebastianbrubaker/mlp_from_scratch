@@ -1,7 +1,7 @@
 # A Rough Derivation of the Multilayer Perceptron 
 ---
 ## Intro
-I came across a really exciting theorem: the Universal Approximation Theorem, which roughly states that neural networks can approximate any function to any desired degree of accuracy. I've always enjoyed learning things from the ground up, so before using any modern deep learning frameworks to tackle problems in my field I wanted to build a neural network from scratch. Below, I derive a simple multilayer perceptron, implement it in NumPy, then train and test using the MNIST dataset to produce a model that can classify handwritten digits with $`\sim 97 \%`$ accuracy.
+I came across a really exciting theorem: the Universal Approximation Theorem, which roughly states that neural networks can approximate any function to any desired degree of accuracy. I've always enjoyed learning things from the ground up, so before using any modern deep learning frameworks to tackle problems in my field I wanted to build a neural network from scratch. Below, I derive a simple multilayer perceptron, implement it in NumPy, then train and test using the MNIST dataset to produce a model that can classify handwritten digits with $`\sim 97 \%`$ accuracy. (Note: I suggest reading the following in `notebook.ipynb` as the typesetting rendered much better there.)
 
 ## Derivation
 ### 1. Structural Overview
@@ -127,7 +127,7 @@ Now define the error signal $`\delta^{[l]}_i = \frac{\partial \mathcal{L}_{\text
 $$
 \begin{aligned}
     \delta^{[L-1]}_i &= a^{[L-1]}_i - y_i \\
-    \implies \mathbf{dZ}^{[L-1]} &= \frac{1}{N} (\mathbf{A}^{[L-1]} - \mathbf{Y}) \qquad \cdot 1/N \text{term arises from differentiating the batch loss.}\\
+    \implies \mathbf{dZ}^{[L-1]} &= \frac{1}{N} (\mathbf{A}^{[L-1]} - \mathbf{Y}) \qquad \cdot 1/N \text{ term arises from differentiating the batch loss.}\\
     \frac{\partial \mathcal{L}_{\text{cce}}}{\partial w^{[l]}_{ij}} &= \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_i} \frac{\partial z^{[l]}_i}{\partial w^{[l]}_{ij}} \\
     &=  \delta^{[l]}_i \frac{\partial}{\partial w^{[l]}_{ij}}\left[w^{[l]}_{i1}a^{[l-1]}_1 + \cdots + w^{[l]}_{ij}a^{[l-1]}_j + \cdots + b^{[l]}_i\right] \\
     &= \delta^{[l]}_i a^{[l-1]}_j \\
@@ -145,7 +145,7 @@ $$
     \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l-1]}_{j}} &= \frac{\partial \mathcal{L}_{\text{cce}}}{\partial a^{[l-1]}_{j}} \frac{\partial a^{[l-1]}_j}{\partial z^{[l-1]}_{j}} \\
     &= \sum_i \delta^{[l]}_i w^{[l]}_{ij} \text{ReLU}'(z^{[l-1]}_{j}) \\
     \text{With: } &\text{ReLU}'(z) := \begin{cases} 1 \quad \text{if} \quad z > 0 \\
-    0 \quad \text{if} \quad z \le 0\end{cases} \qquad \cdot \text{Let RelU}'(0) = 0 \text{ despite it being technically undefined.}\\
+    0 \quad \text{if} \quad z \le 0\end{cases} \qquad \cdot \text{Let ReLU}'(0) = 0 \text{ despite it being formally undefined.}\\
     \implies \mathbf{dZ}^{[l-1]} &= ((\mathbf{W}^{[l]})^{\top} \mathbf{dZ}^{[l]}) \odot \mathbf{ReLU}'(\mathbf{Z}^{[l-1]}) = \mathbf{dA}^{[l-1]} \odot \mathbf{ReLU}'(\mathbf{Z}^{[l-1]}) \\
     \frac{\partial \mathcal{L}_{\text{cce}}}{\partial b^{[l]}_i} &=  \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_{i}}  \frac{\partial z^{[l]}_{i}}{\partial b^{[l]}_{i}} \\
     &= \delta^{[l]}_i(1) \\ 
