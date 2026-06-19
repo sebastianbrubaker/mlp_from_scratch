@@ -136,6 +136,7 @@ $$
     &= \sum_i \delta^{[l]}_i \frac{\partial}{\partial a^{[l-1]}_{j}}\left[w^{[l]}_{i1}a^{[l-1]}_1 + \cdots + w^{[l]}_{ij}a^{[l-1]}_j + \cdots + b^{[l]}_i\right] \\
     &= \sum_i \delta^{[l]}_i w^{[l]}_{ij} \\
     \implies \mathbf{dA}^{[l-1]} &= (\mathbf{W}^{[l]})^{\top} \mathbf{dZ}^{[l]} \\
+    \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l-1]}_{j}} &= \frac{\partial \mathcal{L}_{\text{cce}}}{\partial a^{[l-1]}_{j}} \frac{\partial a^{[l-1]}_j}{\partial z^{[l-1]}_{j}} \\
 \end{aligned}
 $$
 ```
