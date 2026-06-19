@@ -140,7 +140,7 @@ $$
     &= \sum_i \delta^{[l]}_i w^{[l]}_{ij} \text{ReLU}'(z^{[l-1]}_{j}) \\
     \text{With: } &\text{ReLU}'(z) := \begin{cases} 1 \quad \text{if} \quad z > 0 \\
     0 \quad \text{if} \quad z \le 0\end{cases} \qquad \cdot \text{Let RelU}'(0) = 0 \text{ despite it being technically undefined.}\\
-    \implies \mathbf{dZ}^{[l-1]} &= ((\mathbf{W}^{[l]})^{\top} \mathbf{dZ}^{[l]}) \mathbf{\odot} \mathbf{ReLU}'(\mathbf{Z}^{[l-1]}) = \mathbf{dA}^{[l-1]} \mathbf{\odot} \mathbf{ReLU}'(\mathbf{Z}^{[l-1]}) \\
+    \implies \mathbf{dZ}^{[l-1]} &= ((\mathbf{W}^{[l]})^{\top} \mathbf{dZ}^{[l]}) \odot \mathbf{ReLU}'(\mathbf{Z}^{[l-1]}) = \mathbf{dA}^{[l-1]} \mathbf{\odot} \mathbf{ReLU}'(\mathbf{Z}^{[l-1]}) \\
     \frac{\partial \mathcal{L}_{\text{cce}}}{\partial b^{[l]}_i} &=  \frac{\partial \mathcal{L}_{\text{cce}}}{\partial z^{[l]}_{i}}  \frac{\partial z^{[l]}_{i}}{\partial b^{[l]}_{i}} \\
     &= \delta^{[l]}_i(1) \\ 
     &= \delta^{[l]}_i \\
