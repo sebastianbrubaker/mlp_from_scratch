@@ -18,7 +18,7 @@ a^{[L-1]}_{i} &= \text{softmax}(\mathbf{z}^{[L-1]})_i = \frac{\exp({z^{[L-1]}_{i
 \end{aligned}$$
 ```
 
-Expressing the neural network as scalar operations is a great intuition builder, but it severely under-leverages modern hardware architecture and libraries such as NumPy which can achieve blistering speed by parallelizing vectorized operations. Additionally, modern datasets are often massive and consequently must be to be split into batches for training. Therefore, the notation, implementation, and wall clock performance may be improved by vectorizing the above for a batch size of $N$ as:
+Expressing the neural network as scalar operations is a great intuition builder, but it severely under-leverages modern hardware architecture and libraries such as PyTorch which can achieve blistering speed by parallelizing vectorized operations. Additionally, modern datasets are often massive and consequently must be to be split into batches for training. Therefore, the notation, implementation, and wall clock performance may be improved by vectorizing the above for a batch size of $N$ as:
 ```math
 $$
 \begin{aligned}
